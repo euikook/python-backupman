@@ -2,7 +2,7 @@
 
 ### Installation
 ```
-pip -i https://github.com/grepos/python-backupman.git
+sudo -H pip -i https://github.com/grepos/python-backupman.git
 
 ```
 
