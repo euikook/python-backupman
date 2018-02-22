@@ -17,7 +17,7 @@ def is_executable(file):
 
 def makedirs(dirs):
     if sys.version_info[0] < 3:
-        os.makedirs(dirs)
+        if not os.path.isdir(dirs): os.makedirs(dirs)
     else:
         os.makedirs(dirs, exist_ok=True)
 
