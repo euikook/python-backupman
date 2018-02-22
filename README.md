@@ -2,9 +2,8 @@
 
 ### Installation
 ```
-got clone https://github.com/grepos/backupman.git
-mkdir -p ~/bin
-cp backupman/backupman ~/bin
+pip -i https://github.com/grepos/python-backupman.git
+
 ```
 
 ## Usages

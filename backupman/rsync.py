@@ -1,4 +1,5 @@
 import os
+import sys
 import shlex
 import datetime
 import subprocess
@@ -13,6 +14,12 @@ EXCLUDES = ".backupman.excludes"
 
 def is_executable(file):
     return os.path.isfile(file) and os.access(file, os.X_OK)
+
+def makedirs(dirs):
+    if sys.version_info[0] < 3:
+        os.makedirs(dirs)
+    else:
+        os.makedirs(dirs, exist_ok=True)
 
 def rsync(src, dst, opts, logout=None, verbose=False, interactive=False):
     """
@@ -70,7 +77,10 @@ def dosync(configs):
             return
 
         print ("Destination directory does not existed. create it")
-        os.makedirs(configs['dst-dir'], exist_ok=True)
+        if sys.version_info[0] < 3:
+            makedirs(configs['dst-dir'], exist_ok=True)
+        else:
+            makedirs(configs['dst-dir'], exist_ok=True)
 
     rsync_opts  = """ -apvz """
     rsync_opts += """ -e "%s" """ % configs['rsh-opts']
@@ -84,7 +94,7 @@ def dosync(configs):
         logdir = configs['dst-dir'] + "/../Log"
         bkupname = os.path.basename(configs['dst-dir'])
 
-    os.makedirs(logdir, exist_ok=True)
+    makedirs(logdir, exist_ok=True)
     logpath = os.path.join(logdir, bkupname + ".log")
     logfile = open(logpath, 'w')
     logfile.write(str(datetime.datetime.now()) + '\n')
@@ -100,7 +110,7 @@ def dosync(configs):
     """
     if configs['inc-backup']:
         bkupdst = configs['dst-dir'] + "/" + today + "/" + str(uuid)
-        os.makedirs(bkupdst, exist_ok=True)
+        makedirs(bkupdst, exist_ok=True)
 
     """
     If .backupman.excludes is existed, append --exclude-from option
