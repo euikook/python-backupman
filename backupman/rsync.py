@@ -78,9 +78,9 @@ def dosync(configs):
 
         print ("Destination directory does not existed. create it")
         if sys.version_info[0] < 3:
-            makedirs(configs['dst-dir'], exist_ok=True)
+            makedirs(configs['dst-dir'])
         else:
-            makedirs(configs['dst-dir'], exist_ok=True)
+            makedirs(configs['dst-dir'])
 
     rsync_opts  = """ -apvz """
     rsync_opts += """ -e "%s" """ % configs['rsh-opts']
@@ -94,7 +94,7 @@ def dosync(configs):
         logdir = configs['dst-dir'] + "/../Log"
         bkupname = os.path.basename(configs['dst-dir'])
 
-    makedirs(logdir, exist_ok=True)
+    makedirs(logdir)
     logpath = os.path.join(logdir, bkupname + ".log")
     logfile = open(logpath, 'w')
     logfile.write(str(datetime.datetime.now()) + '\n')
@@ -110,7 +110,7 @@ def dosync(configs):
     """
     if configs['inc-backup']:
         bkupdst = configs['dst-dir'] + "/" + today + "/" + str(uuid)
-        makedirs(bkupdst, exist_ok=True)
+        makedirs(bkupdst)
 
     """
     If .backupman.excludes is existed, append --exclude-from option
