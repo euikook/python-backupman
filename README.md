@@ -16,20 +16,23 @@ NAME
 NAME
    
 SYNOPSIS
-       backupman [-i] [-d DAYS] -e [SSH-OPTS] <BKUP-SRC> <BKUP-DST> 
+       backupman [-i] [-I] [-d DAYS] [-e rsh options] [-h REMOTE-HOST] <BKUP-SRC> <BKUP-DST> 
 
 
 DESCRIPTIONS
-       backupman is rsync front-end script.
+       
 
-       -i, --incremental 
-               Incremental Backup.
-       -e, --ssh
-               SSH option.
-       -d, --delete-old-backup=DAYS
-               Delete old backup which is backup older than DAYS ago.
-       -h, --host 
-               Remote host.
+Mandatory arguments to long options are mandatory for short options too.
+       -d,  --delete-old-backup=DAYS
+                            delete old backup whitch backups older than DAYS ago.
+       -e,  --rsh=RSH-OPTIONS    specify the remote shell to use
+       -h,  --host               remote host.
+       -i   --interactive        keep STDIN open even if not attached
+       -I,  --incremental        incremental backup
+       -r,  --run-as-root        remote rsync command run as root using sudo command
+            --help               display this message and exit
+            --version            output version information and exit
+
 
 AUTHOR
        Written by E.K. KIM (euikook@{gmail.com, grepos.com}) 
