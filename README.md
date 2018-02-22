@@ -15,7 +15,7 @@ NAME
 NAME
    
 SYNOPSIS
-       backupman [-i] [-I] [-d DAYS] [-e rsh options] [-h REMOTE-HOST] <BKUP-SRC> <BKUP-DST> 
+       backupman [-i] [-d DAYS] [-e rsh options] [-h REMOTE-HOST] <BKUP-SRC> <BKUP-DST> 
 
 
 DESCRIPTIONS
@@ -26,8 +26,7 @@ Mandatory arguments to long options are mandatory for short options too.
                             delete old backup whitch backups older than DAYS ago.
        -e,  --rsh=RSH-OPTIONS    specify the remote shell to use
        -h,  --host               remote host.
-       -i   --interactive        keep STDIN open even if not attached
-       -I,  --incremental        incremental backup
+       -i,  --incremental        incremental backup
        -r,  --run-as-root        remote rsync command run as root using sudo command
             --help               display this message and exit
             --version            output version information and exit

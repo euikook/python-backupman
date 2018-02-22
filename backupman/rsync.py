@@ -21,7 +21,7 @@ def makedirs(dirs):
     else:
         os.makedirs(dirs, exist_ok=True)
 
-def rsync(src, dst, opts, logout=None, verbose=False, interactive=False):
+def rsync(src, dst, opts, logout=None, verbose=False):
     """
     :param src:
     :param dst:
@@ -39,9 +39,12 @@ def rsync(src, dst, opts, logout=None, verbose=False, interactive=False):
     stderr = subprocess.STDOUT if verbose else stdout
 
     logout.write(cmd + '\n')
-    proc = subprocess.Popen(shlex.split(cmd), stdout=stdout, stderr=stderr)
 
-    if (interactive): proc.communicate()
+    try:
+        subprocess.check_call(shlex.split(cmd), stdout=stdout, stderr=stderr)
+    except subprocess.CalledProcessError as e:
+        logout.write(str(e) + '\n')
+        raise e
 
 def dosync(configs):
     """
@@ -82,6 +85,11 @@ def dosync(configs):
         else:
             makedirs(configs['dst-dir'])
 
+    """
+    Change Current Working Directory
+    """
+    os.chdir(configs['dst-dir'])
+
     rsync_opts  = """ -apvz """
     rsync_opts += """ -e "%s" """ % configs['rsh-opts']
     rsync_opts += """ --rsync-path="%s" """ % cmd_rsync_r
@@ -103,7 +111,12 @@ def dosync(configs):
     sync .backupman.excludes
     """
     rsync_excl_opts = """ --delete --include "%s" --exclude="*" """ % EXCLUDES
-    rsync(bkupsrc, bkupdst , rsync_opts + rsync_excl_opts, logfile, interactive=configs['interactive'])
+
+    try:
+        rsync(bkupsrc, bkupdst , rsync_opts + rsync_excl_opts, logfile)
+    except Exception:
+        print ("Error during backup process. please see more details inside log file `%s`" % logpath)
+        return
 
     """
     sync
@@ -119,4 +132,21 @@ def dosync(configs):
     if os.path.isfile(excloc):
         rsync_opts += """ --exclude-from "%s" """ % excloc
 
-    rsync(bkupsrc, bkupdst, rsync_opts, logfile, verbose=True, interactive=configs['interactive'])
+    try:
+        rsync(bkupsrc, bkupdst, rsync_opts, logfile, verbose=True)
+    except Exception:
+        print ("Error during backup process. please see more details inside log file `%s`" % logpath)
+        return
+
+    if not configs['inc-backup']: return
+
+    lastest = os.path.join(configs['dst-dir'], 'lastest')
+
+    if os.path.exists(lastest):
+        if not os.path.islink(lastest):
+            print ("`%s` is not link. can't create lastest link." % lastest)
+            return
+        else:
+            os.remove(lastest)
+
+    os.symlink(os.path.relpath(bkupdst, configs['dst-dir']), lastest)

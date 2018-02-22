@@ -10,7 +10,6 @@ configs = {
     'host': None,
     'src-dir': None,
     'dst-dir': None,
-    'interactive': False
 }
 
 """
@@ -42,11 +41,10 @@ def main():
     prog = os.path.basename(sys.argv[0])
 
     try:
-        opts, args = getopt.getopt(sys.argv[1:], 'd:e:h:Ii', ['delete-old-backup=',
+        opts, args = getopt.getopt(sys.argv[1:], 'd:e:h:ir', ['delete-old-backup=',
                                                               'rsh=',
                                                               'host=',
                                                               'incremental',
-                                                              'interactive',
                                                               'run-as-root'
                                                               'help',
                                                               'version'])
@@ -76,11 +74,8 @@ def main():
         if opt in ('-h', '--host'):
             configs['host'] = arg
 
-        if opt in ('-I', '--incremental'):
+        if opt in ('-i', '--incremental'):
             configs['inc-backup'] = True
-
-        if opt in ('-i', '--interactive'):
-            configs['interactive'] = True
 
         if opt in ('-r', '--asroot'):
             configs['asroot'] = True
@@ -94,6 +89,7 @@ def main():
     configs['dst-dir'] = args[1]
 
     dosync(configs)
+
 
 
 
