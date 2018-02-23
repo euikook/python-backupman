@@ -104,7 +104,7 @@ def dosync(configs):
 
     makedirs(logdir)
     logpath = os.path.join(logdir, bkupname + "-" + today + ".log")
-    logfile = open(logpath, 'w')
+    logfile = open(logpath, 0) # set bufsize to 0
     logfile.write(str(datetime.datetime.now()) + '\n')
 
     """
