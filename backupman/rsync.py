@@ -103,7 +103,7 @@ def dosync(configs):
         bkupname = os.path.basename(configs['dst-dir'])
 
     makedirs(logdir)
-    logpath = os.path.join(logdir, bkupname + ".log")
+    logpath = os.path.join(logdir, bkupname + "-" + today + ".log")
     logfile = open(logpath, 'w')
     logfile.write(str(datetime.datetime.now()) + '\n')
 
