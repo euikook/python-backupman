@@ -4,7 +4,7 @@ from . import VERSION
 
 configs = {
     'days': None,
-    'rsh-opts': 'ssh',
+    'rsh-opts': '',
     'inc-backup': False,
     'asroot': False,
     'host': None,
@@ -13,7 +13,9 @@ configs = {
 }
 
 """
-
+Source URL Examples
+  ssh://[username[:password]@]test-srv-01[:port]/home/
+  fs:///home/
 """
 def usages(prog):
     print ('Usage: %s [-i] [-d DAYS] [-e rsh options] [-h REMOTE-HOST] <BKUP-SRC> <BKUP-DST>' % prog)
@@ -21,10 +23,9 @@ def usages(prog):
     print("Mandatory arguments to long options are mandatory for short options too.")
     print ("  -d,  --delete-old-backup=DAYS")
     print ("                            delete old backup whitch backups older than DAYS ago.")
-    print ("  -e,  --rsh=RSH-OPTIONS    specify the remote shell to use")
-    print ("  -h,  --host               remote host.")
-    print ("  -i   --interactive        keep STDIN open even if not attached")
-    print ("  -I,  --incremental        incremental backup")
+    print ("  -e,  --rsh=RSH-OPTIONS    specify the remote shell to use, valid on ssh mode")
+    #print ("  -i   --incremental        keep STDIN open even if not attached")
+    print ("  -i,  --incremental        incremental backup")
 
     print ("  -r,  --run-as-root        remote rsync command run as root using sudo command" )
     print ("       --help               display this message and exit")
@@ -35,19 +36,20 @@ def print_version(prog):
 
 import getopt
 
+from urllib.parse import urlparse
+
 from .rsync import dosync
 
 def main():
     prog = os.path.basename(sys.argv[0])
 
     try:
-        opts, args = getopt.getopt(sys.argv[1:], 'd:e:h:ir', ['delete-old-backup=',
-                                                              'rsh=',
-                                                              'host=',
-                                                              'incremental',
-                                                              'run-as-root'
-                                                              'help',
-                                                              'version'])
+        opts, args = getopt.getopt(sys.argv[1:], 'd:e:ir', ['delete-old-backup=',
+                                                            'rsh=',
+                                                            'incremental',
+                                                            'run-as-root'
+                                                            'help',
+                                                            'version'])
     except:
         usages(prog)
         sys.exit(2)
@@ -71,9 +73,6 @@ def main():
         if opt in ('-e', '--rsh'):
             configs['rsh-opts'] = arg
 
-        if opt in ('-h', '--host'):
-            configs['host'] = arg
-
         if opt in ('-i', '--incremental'):
             configs['inc-backup'] = True
 
@@ -85,7 +84,34 @@ def main():
         usages(prog)
         exit(2)
 
-    configs['src-dir'] = args[0]
+
+    try:
+        uri = urlparse(args[0])
+    except Exception as e:
+        print("Couldn't not parse source uri: %s" % str(e))
+
+    if uri.scheme == 'ssh' :
+        configs['proto'] = 'ssh'
+        configs['host'] = uri.netloc
+        configs['src-dir'] = uri.path
+        configs['port'] = uri.port if uri.port else 22
+        configs['username'] = uri.username
+        configs['password'] = uri.password
+    elif uri.scheme == 'fs':
+        configs['proto'] = 'fs'
+        configs['host'] = None
+        if uri.netloc:
+            configs['src-dir'] = os.path.join('/',
+                                              os.path.join(uri.netloc,
+                                                           uri.path[1:] if uri.path.startswith('/') else uri.path))
+        else:
+            configs['src-dir'] = uri.path
+        configs['rsh'] = None
+    else:
+        print('Support protofol ssh or fs only!!')
+        exit(0)
+
+
     configs['dst-dir'] = args[1]
 
     dosync(configs)

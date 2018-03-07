@@ -35,6 +35,7 @@ def rsync(src, dst, opts, logout=None, verbose=False):
     if logout is None: logout = devnull
 
     cmd = """%s %s "%s" "%s" """ % (CMD_RSYNC, opts, src, dst)
+    #print(cmd)
     stdout = logout if verbose else devnull
     stderr = subprocess.STDOUT if verbose else stdout
 
@@ -51,7 +52,9 @@ def dosync(configs):
     :param configs:
     :return:
     """
-    bkupsrc = """%s:%s""" % (configs['host'], os.path.join(configs['src-dir'], '').replace(' ', '\ '))
+
+    bkupsrc = """%s:""" % configs['host'] if configs['host'] else ''
+    bkupsrc += """%s""" % os.path.join(configs['src-dir'], '').replace(' ', '\ ')
     bkupdst = configs['dst-dir']
 
     today = datetime.datetime.now().strftime("%Y-%m-%d")
@@ -91,7 +94,10 @@ def dosync(configs):
     os.chdir(configs['dst-dir'])
 
     rsync_opts  = """ -apvz """
-    rsync_opts += """ -e "%s" """ % configs['rsh-opts']
+
+    if configs['proto'] == 'ssh':
+        rsync_opts += """ -e "ssh %s" """ % configs['rsh-opts']
+
     rsync_opts += """ --rsync-path="%s" """ % cmd_rsync_r
     rsync_opts += """ --numeric-ids """
 
@@ -104,7 +110,8 @@ def dosync(configs):
 
     makedirs(logdir)
     logpath = os.path.join(logdir, bkupname + "-" + today + ".log")
-    logfile = open(logpath, 0) # set bufsize to 0
+    # print(logpath)
+    logfile = open(logpath, 'w+') # set bufsize to 0
     logfile.write(str(datetime.datetime.now()) + '\n')
 
     """
