@@ -40,12 +40,15 @@ def rsync(src, dst, opts, logout=None, verbose=False):
     stderr = subprocess.STDOUT if verbose else stdout
 
     logout.write(cmd + '\n')
+    logout.flush()
 
     try:
         subprocess.check_call(shlex.split(cmd), stdout=stdout, stderr=stderr)
     except subprocess.CalledProcessError as e:
         logout.write(str(e) + '\n')
         raise e
+
+    logout.flush()
 
 def dosync(configs):
     """
@@ -111,7 +114,7 @@ def dosync(configs):
     makedirs(logdir)
     logpath = os.path.join(logdir, bkupname + "-" + today + ".log")
     # print(logpath)
-    logfile = open(logpath, 'w+') # set bufsize to 0
+    logfile = open(logpath, 'w') # set bufsize to 0
     logfile.write(str(datetime.datetime.now()) + '\n')
 
     """
