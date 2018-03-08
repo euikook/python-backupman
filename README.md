@@ -1,10 +1,43 @@
-# Incremental Backup using RSYNC+SSH
+# python-backupman
 
-### Installation
-```
-sudo -H pip -i git+https://github.com/grepos/python-backupman.git
+Incremental Backup Using SSH+RSYNC
+
+## Getting Started
+
+
+### Prerequisites
+
+What things you need to install the software and how to install them
 
 ```
+sudo apt-get install rsync sshpass
+```
+
+### Installing
+
+```
+sudo -H pip install git+https://github.com/grepos/python-backupman.git
+```
+
+
+## Running the tests
+
+```
+mkdir -p ~/tests/src ~/tests/dst
+
+touch ~/tests/src/a
+touch ~/tests/src/b
+touch ~/tests/src/c
+
+backupman ssh://localhost/home/username/tests/src /home/username/tests/dst
+```
+
+
+### Break down into end to end tests
+
+
+### And coding style tests
+
 
 ## Usages
 
@@ -99,3 +132,44 @@ backupman sync .backupman.excludes first than sycn other.
 /run
 /sys/fs/cgroup
 ```
+
+## Deployment
+
+Add additional notes about how to deploy this on a live system
+
+## Built With
+
+## Contributing
+
+Please read
+[CONTRIBUTING.md](CONTRIBUTING.md) for
+details on our code of conduct, and the process for submitting pull requests to
+us.
+
+## Versioning
+
+We use [SemVer](http://semver.org/) for versioning. For the versions available,
+see the [tags on this repository](https://github.com/your/project/tags). 
+
+## Authors
+
+* **E.K. KIM** - *Initial work* -
+  [GREPOS](https://github.com/grepos)
+
+  See also the list of
+  [contributors](https://github.com/grepos/python-backupman/contributors) who participated
+  in this project.
+
+  ## License
+
+  This project is licensed under the MIT License - see the
+  [LICENSE.md](LICENSE.md) file for details
+
+  ## Acknowledgments
+
+  * Hat tip to anyone who's code was used
+  * Inspiration
+  * etc
+
+
+
