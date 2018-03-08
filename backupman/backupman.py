@@ -36,7 +36,11 @@ def print_version(prog):
 
 import getopt
 
-from urllib.parse import urlparse
+if sys.version_info[0] < 3:
+    from urlparse import urlparse
+else:
+    from urllib.parse import urlparse
+
 
 from .rsync import dosync
 
@@ -90,9 +94,13 @@ def main():
     except Exception as e:
         print("Couldn't not parse source uri: %s" % str(e))
 
+
+
+
+
     if uri.scheme == 'ssh' :
         configs['proto'] = 'ssh'
-        configs['host'] = uri.netloc
+        configs['host'] = uri.hostname
         configs['src-dir'] = uri.path
         configs['port'] = uri.port if uri.port else 22
         configs['username'] = uri.username

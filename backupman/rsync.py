@@ -99,7 +99,15 @@ def dosync(configs):
     rsync_opts  = """ -apvz """
 
     if configs['proto'] == 'ssh':
-        rsync_opts += """ -e "ssh %s" """ % configs['rsh-opts']
+        if configs['password']:
+            rshopts = " /usr/bin/sshpass -p %s ssh %s " % (configs['password'], configs['rsh-opts'])
+        else:
+            rshopts = " ssh %s " % configs['rsh-opts']
+
+        if configs['username']:
+            rshopts += " -l %s " % configs['username']
+
+        rsync_opts += """ -e "%s" """ % rshopts
 
     rsync_opts += """ --rsync-path="%s" """ % cmd_rsync_r
     rsync_opts += """ --numeric-ids """
