@@ -18,18 +18,33 @@ Source URL Examples
   fs:///home/
 """
 def usages(prog):
-    print ('Usage: %s [-i] [-d DAYS] [-e rsh options] [-h REMOTE-HOST] <BKUP-SRC> <BKUP-DST>' % prog)
-    print ('')
+    print('Usage: %s [-i] [-d DAYS] [-e rsh options] [-h REMOTE-HOST] <SRC-URI> <BKUP-DST>' % prog)
+    print('')
     print("Mandatory arguments to long options are mandatory for short options too.")
-    print ("  -d,  --delete-old-backup=DAYS")
-    print ("                            delete old backup whitch backups older than DAYS ago.")
-    print ("  -e,  --rsh=RSH-OPTIONS    specify the remote shell to use, valid on ssh mode")
-    #print ("  -i   --incremental        keep STDIN open even if not attached")
-    print ("  -i,  --incremental        incremental backup")
+    print("  -d,  --delete-old-backup=DAYS")
+    print("                            delete old backup whitch backups older than DAYS ago.")
+    print("  -e,  --rsh=RSH-OPTIONS    specify the remote shell to use, valid on ssh mode")
+    #print("  -i   --incremental        keep STDIN open even if not attached")
+    print("  -i,  --incremental        incremental backup")
 
-    print ("  -r,  --run-as-root        remote rsync command run as root using sudo command" )
-    print ("       --help               display this message and exit")
-    print ("       --version            output version information and exit")
+    print("  -r,  --run-as-root        remote rsync command run as root using sudo command" )
+    print("       --help               display this message and exit")
+    print("       --version            output version information and exit")
+    print("")
+    print("SRC-URI: Backup source represented by uri scheme.")
+    print ('')
+    print("  PROTOCOL://[USERNAME[:PASSWORD]@]HOSTNAME[:PORT]/PATH/TO/BACKUP")
+    print('')
+    print('  Connect to backup source using SSH')
+    print("    ssh://examples.com/some/directory")
+    print("    ssh://examples.com:2222/some/directory")
+    print("    ssh://username@examples.com/home/directory")
+    print("    ssh://username:password@examples.com/home/directory")
+    print('')
+    print("  Backup source located in local filesystem")
+    print("    fs://some/directory")
+    print("    fs:///some/directory")
+
 
 def print_version(prog):
     print ('%s version %s' % (prog, VERSION))

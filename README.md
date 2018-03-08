@@ -30,17 +30,19 @@ Mandatory arguments to long options are mandatory for short options too.
             --help               display this message and exit
             --version            output version information and exit
 
+  SRC-URI: Backup source represented by uri scheme.
 
-        SRC-URI: Backup source represented by uri scheme
-                 PROTOCOL://[USERNAME[:PASSWORD]@]HOSTNAME[:PORT]/PATH/TO/BACKUP
+  PROTOCOL://[USERNAME[:PASSWORD]@]HOSTNAME[:PORT]/PATH/TO/BACKUP
 
-                 ssh://examples.com/some/directory
-                 ssh://examples.com:2222/some/directory
-                 ssh://username@examples.com/home/directory
-                 sshL//username:password@examples.com/home/directory
+  Connect to backup source using SSH
+    ssh://examples.com/some/directory
+    ssh://examples.com:2222/some/directory
+    ssh://username@examples.com/home/directory
+    ssh://username:password@examples.com/home/directory
 
-                 fs://some/directory
-                 fs:///some/directory
+  Backup source located in local filesystem
+    fs://some/directory
+    fs:///some/directory
 
 
 AUTHOR
