@@ -107,6 +107,9 @@ def dosync(configs):
         if configs['username']:
             rshopts += " -l %s " % configs['username']
 
+        if configs['port'] is not 22:
+            rshopts += " -p %d " % configs['port']
+
         rsync_opts += """ -e "%s" """ % rshopts
 
     rsync_opts += """ --rsync-path="%s" """ % cmd_rsync_r
