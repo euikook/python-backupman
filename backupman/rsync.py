@@ -3,7 +3,7 @@ import sys
 import shlex
 import datetime
 import subprocess
-from uuid import uuid4 as uuidgen
+#from uuid import uuid4 as uuidgen
 
 """
 Define commands 
@@ -61,7 +61,8 @@ def dosync(configs):
     bkupdst = configs['dst-dir']
 
     today = datetime.datetime.now().strftime("%Y-%m-%d")
-    uuid = uuidgen()
+    uuid = int(datetime.datetime.now().timestamp() * 1000000)
+    #uuid = uuidgen()
 
     """
     check command
