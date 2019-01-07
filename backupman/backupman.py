@@ -10,6 +10,7 @@ configs = {
     'host': None,
     'src-dir': None,
     'dst-dir': None,
+    'keep': False
 }
 
 """
@@ -24,8 +25,8 @@ def usages(prog):
     print("  -d,  --delete-old-backup=DAYS")
     print("                            delete old backup whitch backups older than DAYS ago.")
     print("  -e,  --rsh=RSH-OPTIONS    specify the remote shell to use, valid on ssh mode")
-    #print("  -i   --incremental        keep STDIN open even if not attached")
     print("  -i,  --incremental        incremental backup")
+    print("  -k,  --keep               keep extraneous files from destination dirs")
 
     print("  -r,  --run-as-root        remote rsync command run as root using sudo command" )
     print("       --help               display this message and exit")
@@ -63,12 +64,13 @@ def main():
     prog = os.path.basename(sys.argv[0])
 
     try:
-        opts, args = getopt.getopt(sys.argv[1:], 'd:e:ir', ['delete-old-backup=',
-                                                            'rsh=',
-                                                            'incremental',
-                                                            'run-as-root'
-                                                            'help',
-                                                            'version'])
+        opts, args = getopt.getopt(sys.argv[1:], 'd:e:irk', ['delete-old-backup=',
+                                                               'rsh=',
+                                                               'incremental',
+                                                               'run-as-root'
+                                                               'keep'
+                                                               'help',
+                                                               'version'])
     except:
         usages(prog)
         sys.exit(2)
@@ -97,6 +99,10 @@ def main():
 
         if opt in ('-r', '--asroot'):
             configs['asroot'] = True
+
+        if opt in ('-k', '--keep'):
+            configs['keep'] = True
+
 
 
     if len(args) is not 2:

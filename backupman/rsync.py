@@ -98,6 +98,9 @@ def dosync(configs):
 
     rsync_opts  = """ -apvz """
 
+    if not configs['keep'): 
+        rsync_opts += """ --delete """
+
     if configs['proto'] == 'ssh':
         if configs['password']:
             rshopts = " /usr/bin/sshpass -p %s ssh %s " % (configs['password'], configs['rsh-opts'])
