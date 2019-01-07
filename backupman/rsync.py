@@ -98,7 +98,7 @@ def dosync(configs):
 
     rsync_opts  = """ -apvz """
 
-    if not configs['keep'): 
+    if not configs['keep']: 
         rsync_opts += """ --delete """
 
     if configs['proto'] == 'ssh':
