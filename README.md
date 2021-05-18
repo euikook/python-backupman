@@ -1,9 +1,18 @@
 # Incremental Backup using RSYNC+SSH
 
 ### Installation
+
+Install from [PyPi](https://pypi.org/project/backupman/)
+
+```
+sudo -H pip install backupman
+```
+
+
+Install [Development version](https://github.com/grepos/python-backupman)
+
 ```
 sudo -H pip -i git+https://github.com/grepos/python-backupman.git
-
 ```
 
 ## Usages

@@ -58,20 +58,21 @@ setup(
     # This field corresponds to the "Description" metadata field:
     # https://packaging.python.org/specifications/core-metadata/#description-optional
     long_description=long_description,  # Optional
+    long_description_content_type="text/markdown",
 
     # This should be a valid link to your project's main homepage.
     #
     # This field corresponds to the "Home-Page" metadata field:
     # https://packaging.python.org/specifications/core-metadata/#home-page-optional
-    url='https://blog.grepos.com',  # Optional
+    url='https://github.com/euikook/python-backupman',  # Optional
 
     # This should be your name or the name of the organization which owns the
     # project.
-    author='E.K. KIM',  # Optional
+    author='euikook',  # Optional
 
     # This should be a valid email address corresponding to the author listed
     # above.
-    author_email='euikook@grepos.com',  # Optional
+    author_email='euikook@gmail.com',  # Optional
 
     # Classifiers help users find your project by categorizing it.
     #
@@ -90,7 +91,9 @@ setup(
         'Intended Audience :: System Administrators',
 
         # Topic
-        'Topic :: System Administration :: Backup Tools',
+         'Topic :: System :: Archiving',
+         'Topic :: System :: Archiving :: Backup',
+         'Topic :: System :: Networking',
 
         # Pick your license as you wish
         'License :: OSI Approved :: MIT License',
